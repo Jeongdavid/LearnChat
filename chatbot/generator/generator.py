@@ -1,13 +1,16 @@
+#
 import resolve_path
+from time import sleep
 from typing import Iterator
 from llama_cpp import Llama
 from typing import Iterable
 
 
+
 class Generator:
     def __init__(self) -> None:
         # ###
-        # 주석을 지우고 __init__ 을 자유롭게 활용하자.
+        # 주석을 지우고 __init__ 을 자유롭게 활용하자
         # ###
         pass
 
@@ -19,9 +22,21 @@ class Generator:
         stream = llm(prompt, max_tokens=80, stream=True)
 
         for chunk in stream:
-            yield chunk['choices'][0]['text']
+            text = chunk['choices'][0]['text']
+            for token in text.split():
+                sleep(0.1)
+                yield token
+            yield ' '
 
 
+
+
+        
+        # from time import sleep
+        # for chunk in text.split():
+        #     sleep(0.1)
+        #     yield chunk
+        #     yield ' '
 
     # def generate(self, prompt: str) -> Iterator[str]:
         # ###
@@ -38,11 +53,3 @@ class Generator:
         # prompt: Pizza is 
         # @return: " so delicious"
         # ###
-
-        text = "This is a sample answer. Replace this with your answer"
-        from time import sleep
-        for chunk in text.split():
-            sleep(0.1)
-            yield chunk
-            yield ' '
-
