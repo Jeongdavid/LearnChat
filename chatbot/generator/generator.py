@@ -1,4 +1,8 @@
+import resolve_path
 from typing import Iterator
+from llama_cpp import Llama
+from typing import Iterable
+
 
 class Generator:
     def __init__(self) -> None:
@@ -7,8 +11,19 @@ class Generator:
         # ###
         pass
 
+    def generate(self, prompt: str) -> Iterator:
 
-    def generate(self, prompt: str) -> Iterator[str]:
+        llm = Llama.from_pretrained(
+            repo_id="bartowski/DeepSeek-R1-Distill-Qwen-1.5B-GGUF",
+            filename="DeepSeek-R1-Distill-Qwen-1.5B-IQ2_M.gguf", )
+        stream = llm(prompt, max_tokens=80, stream=True)
+
+        for chunk in stream:
+            yield chunk['choices'][0]['text']
+
+
+
+    # def generate(self, prompt: str) -> Iterator[str]:
         # ###
         # 주석을 지우고 다음 기능을 완성하자.
         # generate 는 단순 prompt 뒤에 이어질 "자연스러운" 말을 리턴하면 된다.
